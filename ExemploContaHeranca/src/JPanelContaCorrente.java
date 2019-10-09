@@ -1,9 +1,8 @@
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
+
+import javax.swing.JLabel;
 import javax.swing.JTextField;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class JPanelContaCorrente extends JPanelConta {

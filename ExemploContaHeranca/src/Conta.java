@@ -5,7 +5,7 @@ public class Conta {
 	
 	private int codigo;
 	private Cliente titular;
-	private double saldo = 0;
+	protected double saldo = 0;
 	private ArrayList<String> extrato = new ArrayList<String>();
 	private String senha;
 	

@@ -1,4 +1,6 @@
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,7 +17,6 @@ public class JPanelConta extends JPanel {
 	private JButton btnDepositar;
 	private JLabel lblTitulo;
 
-	private Cliente titular;
 	private Conta conta;
 
 	public JPanelConta() {
@@ -67,6 +68,11 @@ public class JPanelConta extends JPanel {
 		this.add(txtMovimentacao);
 
 		btnSacar = new JButton("Sacar");
+		btnSacar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				realizarSaque();
+			}
+		});
 		btnSacar.setEnabled(false);
 		btnSacar.setBounds(218, 156, 89, 30);
 		this.add(btnSacar);
@@ -122,6 +128,12 @@ public class JPanelConta extends JPanel {
 		btnSacar.setEnabled(!isEditable);
 		btnDepositar.setEnabled(!isEditable);
 		txtMovimentacao.setEnabled(!isEditable);
+	}
+	
+	public void realizarSaque() {
+		System.out.println("Vamos tentar sacar " + txtMovimentacao.getText());
+		double saque = Double.parseDouble(txtMovimentacao.getText());
+		this.conta.sacar(saque);
 	}
 
 }

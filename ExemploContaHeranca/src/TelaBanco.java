@@ -13,14 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class TelaBanco {
 
 	private JFrame frame;
-	private JPanel panelLogin;
 	private static JPanel panelCadastroCliente;
 	private JTextField txtNome;
 	private JTextField txtCpf;
@@ -34,7 +32,6 @@ public class TelaBanco {
 	private JButton btnProximo;
 	private JButton btnAnterior;
 	private JLabel labelFormatoData;
-	private JTabbedPane tabbedPane;
 
 	private int index;
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
@@ -74,21 +71,19 @@ public class TelaBanco {
 		frame.setBounds(100, 100, 722, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 706, 519);
-		frame.getContentPane().add(tabbedPane);
-
+		
 		bg = new ButtonGroup();
 
 		panel = new JPanel();
-		tabbedPane.addTab("Cadastrar", null, panel, null);
+		panel.setBounds(0, 0, 706, 519);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		panelCadastroCliente = new JPanel();
-		panelCadastroCliente.setBounds(0, 0, 701, 491);
-		panel.add(panelCadastroCliente);
+		panelCadastroCliente.setBounds(0, 0, 706, 519);
 		panelCadastroCliente.setLayout(null);
+		panel.add(panelCadastroCliente);
+		
 
 		JLabel labelCliente = new JLabel("CLIENTE");
 		labelCliente.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -116,7 +111,7 @@ public class TelaBanco {
 
 		btnProximo = new JButton(">");
 		btnProximo.setEnabled(false);
-		btnProximo.setBounds(641, 11, 50, 50);
+		btnProximo.setBounds(646, 11, 50, 50);
 		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index++;
@@ -185,6 +180,7 @@ public class TelaBanco {
 		rdbtnFeminino.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnFeminino.setBounds(212, 189, 48, 23);
 		panelCadastroCliente.add(rdbtnFeminino);
+		
 		bg.add(rdbtnMasculino);
 		bg.add(rdbtnFeminino);
 
@@ -199,28 +195,11 @@ public class TelaBanco {
 		btnAdicionar.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnAdicionar.setEnabled(false);
 		btnAdicionar.setBackground(Color.LIGHT_GRAY);
-		btnAdicionar.setBounds(495, 430, 196, 50);
+		btnAdicionar.setBounds(500, 458, 196, 50);
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Cliente c = new Cliente();
-
-				c.setNome(txtNome.getText());
-
-				String cpf = txtCpf.getText();
-				if (!cpf.equals("") && Cliente.isCpfValido(cpf)) {
-					c.setCpf(cpf);
-				}
-
-				char sexo = bg.getSelection().getActionCommand().charAt(0);
-				System.out.println(sexo);
-				c.setSexo(sexo);
-
-				String dataDeNascimento = txtData.getText();
-				if (!dataDeNascimento.isEmpty() && Cliente.isDataValida(dataDeNascimento)) {
-					c.setDataDeNascimento(dataDeNascimento);
-				}
-
-				clientes.add(c);
+				addCliente(c);
 				index = clientes.indexOf(c);
 				atualizaBotoes();
 				atualizaCampos();
@@ -237,7 +216,6 @@ public class TelaBanco {
 					atualizaCampos();
 				} else {
 					limpaCampos();
-					atualizaBotoes();
 					atualizaCampos();
 				}
 				atualizaBotoes();
@@ -247,7 +225,7 @@ public class TelaBanco {
 		btnRemover.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemover.setEnabled(false);
 		btnRemover.setBackground(Color.LIGHT_GRAY);
-		btnRemover.setBounds(371, 430, 114, 50);
+		btnRemover.setBounds(363, 458, 114, 50);
 		panelCadastroCliente.add(btnRemover);
 
 		btnGerenciarContas = new JButton("Gerenciar contas");
@@ -264,26 +242,21 @@ public class TelaBanco {
 		btnGerenciarContas.setBounds(445, 193, 196, 50);
 		panelCadastroCliente.add(btnGerenciarContas);
 
+		bg = new ButtonGroup();
+
 		panelCadastroContas = new TelaGerenciarContas();
 		panelCadastroContas.setBounds(0, 0, 701, 491);
 		panelCadastroContas.setLayout(null);
-
-		panelLogin = new JPanel();
-		tabbedPane.addTab("Login", null, panelLogin, null);
-		panelLogin.setLayout(null);
-		tabbedPane.setEnabledAt(1, false);
 	}
 
 	private void atualizaBotoes() {
-
 		btnAnterior.setEnabled(index >= 1);
 		btnProximo.setEnabled(index < clientes.size());
 
 		String nome = txtNome.getText();
-
 		btnAdicionar.setEnabled(nome.length() > 3);
-		btnRemover.setEnabled(clientes.size() >= 1 && index != clientes.size());
 
+		btnRemover.setEnabled(clientes.size() >= 1 && index != clientes.size());
 		btnGerenciarContas.setEnabled(clientes.size() >= 1 && index != clientes.size());
 	}
 
@@ -304,11 +277,8 @@ public class TelaBanco {
 			}
 
 			txtData.setText(clienteLogado.getDataDeNascimentoFormatada());
-			tabbedPane.setEnabledAt(1, true);
-
 		} else {
 			limpaCampos();
-			tabbedPane.setEnabledAt(1, false);
 		}
 
 		if (index < clientes.size()) {
@@ -334,7 +304,7 @@ public class TelaBanco {
 		rdbtnFeminino.setSelected(false);
 		txtData.setText("");
 	}
-	
+
 	public static void alternarCadastro() {
 		if(panelCadastroCliente.isVisible()) {
 			panelCadastroContas.setVisible(true);
@@ -347,5 +317,25 @@ public class TelaBanco {
 			panel.remove(panelCadastroContas);
 			panel.add(panelCadastroCliente);
 		}
+	}
+
+	private void addCliente(Cliente c) {
+		c.setNome(txtNome.getText());
+
+		String cpf = txtCpf.getText();
+		if (!cpf.equals("") && Cliente.isCpfValido(cpf)) {
+			c.setCpf(cpf);
+		}
+
+		char sexo = bg.getSelection().getActionCommand().charAt(0);
+		System.out.println(sexo);
+		c.setSexo(sexo);
+
+		String dataDeNascimento = txtData.getText();
+		if (!dataDeNascimento.isEmpty() && Cliente.isDataValida(dataDeNascimento)) {
+			c.setDataDeNascimento(dataDeNascimento);
+		}
+
+		clientes.add(c);
 	}
 }

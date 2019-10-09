@@ -73,6 +73,12 @@ public class TelaGerenciarContas extends JPanel {
 		contaPoupanca = new JPanelContaPoupanca();
 		contaPoupanca.setBounds(103, 37, 500, 306);
 		contaPoupanca.setVisible(false);
+		contaPoupanca.getTxtTaxaJuros().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				atualizaBotoes();
+			}
+		});
 
 		contaCorrente = new JPanelContaCorrente();
 		contaCorrente.setBounds(103, 37, 500, 306);
@@ -92,8 +98,8 @@ public class TelaGerenciarContas extends JPanel {
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				index--;
-				atualizaBotoes();
 				atualizaCampos();
+				atualizaBotoes();
 			}
 		});
 		this.add(btnAnterior);
@@ -104,8 +110,8 @@ public class TelaGerenciarContas extends JPanel {
 		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index++;
-				atualizaBotoes();
 				atualizaCampos();
+				atualizaBotoes();
 			}
 		});
 		this.add(btnProximo);
@@ -131,6 +137,7 @@ public class TelaGerenciarContas extends JPanel {
 				titular.getContas().remove(index);
 				if (index != 0) {
 					index--;
+					atualizaBotoes();
 					atualizaCampos();
 				} else {
 					limpaCampos();
@@ -191,6 +198,10 @@ public class TelaGerenciarContas extends JPanel {
 
 		if (titular.getContas().size() >= 1 && index != titular.getContas().size()) {
 			contaAtiva = titular.getContas().get(index);
+
+			contaCorrente.setConta(contaAtiva);
+			contaPoupanca.setConta(contaAtiva);
+
 			contaCorrente.getLblTitulo().setText("CONTA N°" + (index + 1));
 			contaPoupanca.getLblTitulo().setText("CONTA N°" + (index + 1));
 
@@ -210,17 +221,17 @@ public class TelaGerenciarContas extends JPanel {
 			limpaCampos();
 		}
 
-		//se for permitido editar os dados da conta, retorna true
+		// se for permitido editar os dados da conta, retorna true
 		boolean isEditable = !(index < titular.getContas().size());
-		
-			rdbtnContaCorrente.setEnabled(isEditable);
-			rdbtnContaPoupanca.setEnabled(isEditable);
 
-			if (contaAtiva instanceof ContaCorrente) {
-				contaCorrente.atualizaCampos(isEditable);
-			} else {
-				contaPoupanca.atualizaCampos(isEditable);
-			}
+		rdbtnContaCorrente.setEnabled(isEditable);
+		rdbtnContaPoupanca.setEnabled(isEditable);
+
+		if (contaAtiva instanceof ContaCorrente) {
+			contaCorrente.atualizaCampos(isEditable);
+		} else {
+			contaPoupanca.atualizaCampos(isEditable);
+		}
 	}
 
 	private void limpaCampos() {
