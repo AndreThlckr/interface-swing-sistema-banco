@@ -4,13 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class TelaGerenciarContas extends JPanel {
@@ -57,13 +58,7 @@ public class TelaGerenciarContas extends JPanel {
 		rdbtnContaPoupanca.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if (rdbtnContaCorrente.isSelected()) {
-					contaCorrente.setVisible(true);
-					contaPoupanca.setVisible(false);
-				} else {
-					contaCorrente.setVisible(false);
-					contaPoupanca.setVisible(true);
-				}
+				verificaTipoConta();
 			}
 		});
 		rdbtnContaPoupanca.setHorizontalAlignment(SwingConstants.CENTER);
@@ -81,6 +76,13 @@ public class TelaGerenciarContas extends JPanel {
 
 		contaCorrente = new JPanelContaCorrente();
 		contaCorrente.setBounds(103, 37, 500, 306);
+		contaCorrente.getTxtLimite().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				atualizaBotoes();
+			}
+		});
+
 		this.add(contaCorrente);
 		this.add(contaPoupanca);
 
@@ -168,46 +170,64 @@ public class TelaGerenciarContas extends JPanel {
 	}
 
 	private void atualizaBotoes() {
+		verificaTipoConta();
 
 		btnAnterior.setEnabled(index >= 1);
 		btnProximo.setEnabled(index < titular.getContas().size());
 
-		// verificacoes
+		if (rdbtnContaCorrente.isSelected() && contaCorrente.getLimite() > 0) {
+			btnAdicionar.setEnabled(true);
+		} else if (rdbtnContaPoupanca.isSelected() && contaPoupanca.getTaxaJuros() > 0) {
+			btnAdicionar.setEnabled(true);
+		} else {
+			btnAdicionar.setEnabled(false);
+		}
 
-		// btnAdicionar.setEnabled(nome.length() > 3);
 		btnRemover.setEnabled(titular.getContas().size() >= 1 && index != titular.getContas().size());
 	}
 
 	private void atualizaCampos() {
+		verificaTipoConta();
+
 		if (titular.getContas().size() >= 1 && index != titular.getContas().size()) {
 			contaAtiva = titular.getContas().get(index);
+			contaCorrente.getLblTitulo().setText("CONTA N°" + (index + 1));
+			contaPoupanca.getLblTitulo().setText("CONTA N°" + (index + 1));
 
 			// preenche dados
 
 			if (contaAtiva instanceof ContaCorrente) {
 				rdbtnContaCorrente.setSelected(true);
 				rdbtnContaPoupanca.setSelected(false);
+				contaCorrente.setDadosConta(contaAtiva);
 			} else {
-				rdbtnContaCorrente.setSelected(true);
-				rdbtnContaPoupanca.setSelected(false);
+				rdbtnContaCorrente.setSelected(false);
+				rdbtnContaPoupanca.setSelected(true);
+				contaPoupanca.setDadosConta(contaAtiva);
 			}
 
 		} else {
 			limpaCampos();
 		}
 
-		if (index < titular.getContas().size()) {
-			contaCorrente.setTxtLimiteStatus(false);
-			contaPoupanca.setTxtTaxaJurosStatus(false);
-		} else {
-			contaCorrente.setTxtLimiteStatus(true);
-			contaPoupanca.setTxtTaxaJurosStatus(true);
-		}
+		//se for permitido editar os dados da conta, retorna true
+		boolean isEditable = !(index < titular.getContas().size());
+		
+			rdbtnContaCorrente.setEnabled(isEditable);
+			rdbtnContaPoupanca.setEnabled(isEditable);
+
+			if (contaAtiva instanceof ContaCorrente) {
+				contaCorrente.atualizaCampos(isEditable);
+			} else {
+				contaPoupanca.atualizaCampos(isEditable);
+			}
 	}
 
 	private void limpaCampos() {
-		contaCorrente.setLblTitulo("CRIAR NOVA CONTA");
-		contaPoupanca.setLblTitulo("CRIAR NOVA CONTA");
+		contaCorrente.getLblTitulo().setText("CRIAR NOVA CONTA");
+		contaPoupanca.getLblTitulo().setText("CRIAR NOVA CONTA");
+		contaCorrente.getTxtLimite().setText("");
+
 	}
 
 	public void setCliente(Cliente cliente) {
@@ -238,6 +258,16 @@ public class TelaGerenciarContas extends JPanel {
 		}
 
 		index = titular.getContas().indexOf(c);
+	}
+
+	private void verificaTipoConta() {
+		if (rdbtnContaCorrente.isSelected()) {
+			contaCorrente.setVisible(true);
+			contaPoupanca.setVisible(false);
+		} else {
+			contaCorrente.setVisible(false);
+			contaPoupanca.setVisible(true);
+		}
 	}
 
 }
