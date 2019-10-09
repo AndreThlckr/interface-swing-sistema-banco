@@ -24,7 +24,6 @@ public class TelaGerenciarContas extends JPanel {
 
 	private int index;
 	private Cliente titular;
-	private ArrayList<Conta> contas = new ArrayList<Conta>();
 	private Conta contaAtiva;
 	private JRadioButton rdbtnContaCorrente;
 	private JRadioButton rdbtnContaPoupanca;
@@ -127,7 +126,7 @@ public class TelaGerenciarContas extends JPanel {
 		btnRemover = new JButton("Remover");
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contas.remove(index);
+				titular.getContas().remove(index);
 				if (index != 0) {
 					index--;
 					atualizaCampos();
@@ -171,17 +170,17 @@ public class TelaGerenciarContas extends JPanel {
 	private void atualizaBotoes() {
 
 		btnAnterior.setEnabled(index >= 1);
-		btnProximo.setEnabled(index < contas.size());
+		btnProximo.setEnabled(index < titular.getContas().size());
 
 		// verificacoes
 
 		// btnAdicionar.setEnabled(nome.length() > 3);
-		btnRemover.setEnabled(contas.size() >= 1 && index != contas.size());
+		btnRemover.setEnabled(titular.getContas().size() >= 1 && index != titular.getContas().size());
 	}
 
 	private void atualizaCampos() {
-		if (contas.size() >= 1 && index != contas.size()) {
-			contaAtiva = contas.get(index);
+		if (titular.getContas().size() >= 1 && index != titular.getContas().size()) {
+			contaAtiva = titular.getContas().get(index);
 
 			// preenche dados
 
@@ -197,7 +196,7 @@ public class TelaGerenciarContas extends JPanel {
 			limpaCampos();
 		}
 
-		if (index < contas.size()) {
+		if (index < titular.getContas().size()) {
 			contaCorrente.setTxtLimiteStatus(false);
 			contaPoupanca.setTxtTaxaJurosStatus(false);
 		} else {
@@ -238,9 +237,7 @@ public class TelaGerenciarContas extends JPanel {
 			this.titular.criaContaPoupanca((ContaPoupanca) c);
 		}
 
-		// contas.add(c);
-
-		index = contas.indexOf(c);
+		index = titular.getContas().indexOf(c);
 	}
 
 }

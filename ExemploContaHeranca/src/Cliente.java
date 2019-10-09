@@ -29,4 +29,8 @@ public class Cliente extends Pessoa {
 		c.depositar(saldo);
 		contas.add(c);
 	}
+	
+	public ArrayList<Conta> getContas() {
+		return this.contas;
+	}
 }
