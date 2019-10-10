@@ -78,6 +78,11 @@ public class JPanelConta extends JPanel {
 		this.add(btnSacar);
 
 		btnDepositar = new JButton("Depositar");
+		btnDepositar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				realizarDeposito();
+			}
+		});
 		btnDepositar.setEnabled(false);
 		btnDepositar.setBounds(317, 156, 89, 30);
 		this.add(btnDepositar);
@@ -88,19 +93,19 @@ public class JPanelConta extends JPanel {
 		labelReais.setBounds(10, 154, 53, 30);
 		this.add(labelReais);
 	}
-	
+
 	public JLabel getLblTitulo() {
 		return this.lblTitulo;
 	}
-	
+
 	public JLabel getLblSaldo() {
 		return this.lblSaldo;
 	}
-	
+
 	public JTextField getTxtMovimentacao() {
 		return this.txtMovimentacao;
 	}
-	
+
 	public JButton getBtnSacar() {
 		return this.btnSacar;
 	}
@@ -108,7 +113,7 @@ public class JPanelConta extends JPanel {
 	public JButton getBtnDepositar() {
 		return this.btnDepositar;
 	}
-	
+
 	public void setConta(Conta conta) {
 		this.conta = conta;
 	}
@@ -122,22 +127,26 @@ public class JPanelConta extends JPanel {
 		lblSaldo.setText("R$" + c.getSaldo());
 		txtMovimentacao.setText("");
 	}
-	
+
 	public void atualizaCampos(boolean isEditable) {
 		if (this instanceof JPanelContaCorrente) {
-			((JPanelContaCorrente)this).getTxtLimite().setEnabled(isEditable);
-		} else if (this instanceof JPanelContaPoupanca){
-			((JPanelContaPoupanca)this).getTxtTaxaJuros().setEnabled(isEditable);
+			((JPanelContaCorrente) this).getTxtLimite().setEnabled(!isEditable);
+		} else if (this instanceof JPanelContaPoupanca) {
+			((JPanelContaPoupanca) this).getTxtTaxaJuros().setEnabled(!isEditable);
 		}
 		btnSacar.setEnabled(!isEditable);
 		btnDepositar.setEnabled(!isEditable);
 		txtMovimentacao.setEnabled(!isEditable);
 	}
-	
+
 	public void realizarSaque() {
-		System.out.println("Vamos tentar sacar " + txtMovimentacao.getText());
 		double saque = Double.parseDouble(txtMovimentacao.getText());
 		this.conta.sacar(saque);
+	}
+	
+	public void realizarDeposito() {
+		double deposito = Double.parseDouble(txtMovimentacao.getText());
+		this.conta.depositar(deposito);
 	}
 
 }

@@ -212,11 +212,10 @@ public class TelaBanco {
 				clientes.remove(index);
 				if (index != 0) {
 					index--;
-					atualizaCampos();
 				} else {
 					limpaCampos();
-					atualizaCampos();
 				}
+				atualizaCampos();
 				atualizaBotoes();
 			}
 		});
@@ -232,6 +231,8 @@ public class TelaBanco {
 			public void actionPerformed(ActionEvent arg0) {
 				panelCadastroContas.setTitular(clienteLogado);
 				alternarCadastro();
+				panelCadastroContas.atualizaCampos();
+				panelCadastroContas.atualizaBotoes();
 			}
 		});
 		btnGerenciarContas.setEnabled(false);
@@ -247,6 +248,10 @@ public class TelaBanco {
 		panelCadastroContas.getBtnRetornar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				alternarCadastro();
+				index = clientes.indexOf(panelCadastroContas.getTitular());
+				atualizaCampos();
+				atualizaBotoes();
+				
 			}
 		});
 	}

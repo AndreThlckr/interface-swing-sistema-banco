@@ -54,7 +54,6 @@ public class TelaGerenciarContas extends JPanel {
 		rdbtnContaPoupanca.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				verificaTipoConta();
 				atualizaBotoes();
 				atualizaCampos();
 			}
@@ -110,7 +109,6 @@ public class TelaGerenciarContas extends JPanel {
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				index--;
-				verificaTipoConta();
 				atualizaCampos();
 				atualizaBotoes();
 			}
@@ -123,7 +121,6 @@ public class TelaGerenciarContas extends JPanel {
 		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index++;
-				verificaTipoConta();
 				atualizaCampos();
 				atualizaBotoes();
 			}
@@ -139,7 +136,6 @@ public class TelaGerenciarContas extends JPanel {
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				addConta();
-				verificaTipoConta();
 				atualizaBotoes();
 				atualizaCampos();
 			}
@@ -152,10 +148,10 @@ public class TelaGerenciarContas extends JPanel {
 				titular.getContas().remove(index);
 				if (index != 0) {
 					index--;
-					verificaTipoConta();
 				} else {
 					limpaCampos();
 				}
+				verificaTipoConta();
 				atualizaBotoes();
 				atualizaCampos();
 			}
@@ -173,7 +169,6 @@ public class TelaGerenciarContas extends JPanel {
 		btnRetornar.setBackground(Color.LIGHT_GRAY);
 		btnRetornar.setBounds(435, 433, 196, 50);
 		add(btnRetornar);
-
 	}
 
 	public JButton getBtnRetornar() {
@@ -188,7 +183,7 @@ public class TelaGerenciarContas extends JPanel {
 		this.titular = titular;
 	}
 
-	private void atualizaBotoes() {
+	public void atualizaBotoes() {
 		verificaTipoConta();
 
 		btnAnterior.setEnabled(index >= 1);
@@ -200,14 +195,11 @@ public class TelaGerenciarContas extends JPanel {
 		btnRemover.setEnabled(titular.getContas().size() >= 1 && index != titular.getContas().size());
 	}
 
-	private void atualizaCampos() {
+	public void atualizaCampos() {
 		verificaTipoConta();
 
-		// se for permitido editar os dados da conta, retorna true
-		boolean isEditable = !(index < titular.getContas().size());
-
-		rdbtnContaCorrente.setEnabled(isEditable);
-		rdbtnContaPoupanca.setEnabled(isEditable);
+		rdbtnContaCorrente.setEnabled(!(index < titular.getContas().size()));
+		rdbtnContaPoupanca.setEnabled(!(index < titular.getContas().size()));
 
 		if (titular.getContas().size() >= 1 && index != titular.getContas().size()) {
 			contaAtiva = titular.getContas().get(index);
@@ -215,7 +207,7 @@ public class TelaGerenciarContas extends JPanel {
 			if (contaAtiva instanceof ContaCorrente) {
 				contaCorrente.setConta(contaAtiva);
 
-				contaCorrente.atualizaCampos(isEditable);
+				contaCorrente.atualizaCampos(!(index < titular.getContas().size()));
 				rdbtnContaCorrente.setSelected(true);
 				rdbtnContaPoupanca.setSelected(false);
 				contaCorrente.getLblTitulo().setText("CONTA N°" + (index + 1));
@@ -223,7 +215,7 @@ public class TelaGerenciarContas extends JPanel {
 			} else {
 				contaPoupanca.setConta(contaAtiva);
 
-				contaPoupanca.atualizaCampos(isEditable);
+				contaPoupanca.atualizaCampos(!(index < titular.getContas().size()));
 				rdbtnContaCorrente.setSelected(false);
 				rdbtnContaPoupanca.setSelected(true);
 				contaPoupanca.getLblTitulo().setText("CONTA N°" + (index + 1));
@@ -270,7 +262,7 @@ public class TelaGerenciarContas extends JPanel {
 		index = titular.getContas().indexOf(c);
 	}
 
-	private void verificaTipoConta() {
+	public void verificaTipoConta() {
 		if (rdbtnContaCorrente.isSelected()) {
 			contaCorrente.setVisible(true);
 			contaPoupanca.setVisible(false);
