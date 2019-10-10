@@ -16,7 +16,7 @@ public class ContaPoupanca extends Conta {
 	}
 
 	public void renderJuros() {
-		depositar(getSaldo() + (getSaldo() * getTaxaJuros()));
+		depositar(getSaldo() * getTaxaJuros());
 	}
 
 }

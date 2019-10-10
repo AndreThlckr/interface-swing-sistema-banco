@@ -17,7 +17,7 @@ public class JPanelConta extends JPanel {
 	private JButton btnDepositar;
 	private JLabel lblTitulo;
 
-	private Conta conta;
+	protected Conta conta;
 
 	public JPanelConta() {
 		super();
@@ -57,14 +57,14 @@ public class JPanelConta extends JPanel {
 		JLabel labelMovimentacao = new JLabel("MOVIMENTA\u00C7\u00C3O:");
 		labelMovimentacao.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelMovimentacao.setFont(new Font("Tahoma", Font.BOLD, 14));
-		labelMovimentacao.setBounds(0, 130, 150, 30);
+		labelMovimentacao.setBounds(0, 178, 150, 30);
 		this.add(labelMovimentacao);
 
 		txtMovimentacao = new JTextField();
 		txtMovimentacao.setEnabled(false);
 		txtMovimentacao.setHorizontalAlignment(SwingConstants.CENTER);
 		txtMovimentacao.setColumns(10);
-		txtMovimentacao.setBounds(68, 156, 140, 30);
+		txtMovimentacao.setBounds(68, 204, 140, 30);
 		this.add(txtMovimentacao);
 
 		btnSacar = new JButton("Sacar");
@@ -74,7 +74,7 @@ public class JPanelConta extends JPanel {
 			}
 		});
 		btnSacar.setEnabled(false);
-		btnSacar.setBounds(218, 156, 89, 30);
+		btnSacar.setBounds(218, 204, 89, 30);
 		this.add(btnSacar);
 
 		btnDepositar = new JButton("Depositar");
@@ -84,13 +84,13 @@ public class JPanelConta extends JPanel {
 			}
 		});
 		btnDepositar.setEnabled(false);
-		btnDepositar.setBounds(317, 156, 89, 30);
+		btnDepositar.setBounds(317, 204, 89, 30);
 		this.add(btnDepositar);
 
 		JLabel labelReais = new JLabel("R$");
 		labelReais.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelReais.setFont(new Font("Tahoma", Font.BOLD, 14));
-		labelReais.setBounds(10, 154, 53, 30);
+		labelReais.setBounds(10, 202, 53, 30);
 		this.add(labelReais);
 	}
 
@@ -133,10 +133,11 @@ public class JPanelConta extends JPanel {
 			((JPanelContaCorrente) this).getTxtLimite().setEnabled(!isEditable);
 		} else if (this instanceof JPanelContaPoupanca) {
 			((JPanelContaPoupanca) this).getTxtTaxaJuros().setEnabled(!isEditable);
+			((JPanelContaPoupanca) this).getBtnRender().setEnabled(isEditable);
 		}
-		btnSacar.setEnabled(!isEditable);
-		btnDepositar.setEnabled(!isEditable);
-		txtMovimentacao.setEnabled(!isEditable);
+		btnSacar.setEnabled(isEditable);
+		btnDepositar.setEnabled(isEditable);
+		txtMovimentacao.setEnabled(isEditable);
 	}
 
 	public void realizarSaque() {

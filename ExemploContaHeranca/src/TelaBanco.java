@@ -102,8 +102,8 @@ public class TelaBanco {
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				index--;
-				atualizaBotoes();
 				atualizaCampos();
+				atualizaBotoes();
 			}
 		});
 		panelCadastroCliente.add(btnAnterior);
@@ -114,8 +114,8 @@ public class TelaBanco {
 		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index++;
-				atualizaBotoes();
 				atualizaCampos();
+				atualizaBotoes();
 			}
 		});
 		panelCadastroCliente.add(btnProximo);
@@ -251,7 +251,6 @@ public class TelaBanco {
 				index = clientes.indexOf(panelCadastroContas.getTitular());
 				atualizaCampos();
 				atualizaBotoes();
-				
 			}
 		});
 	}
@@ -261,7 +260,7 @@ public class TelaBanco {
 		btnProximo.setEnabled(index < clientes.size());
 
 		String nome = txtNome.getText();
-		btnAdicionar.setEnabled(nome.length() > 3);
+		btnAdicionar.setEnabled(nome.length() > 3 && index == clientes.size() && !nome.equals(""));
 
 		btnRemover.setEnabled(clientes.size() >= 1 && index != clientes.size());
 		btnGerenciarContas.setEnabled(clientes.size() >= 1 && index != clientes.size());

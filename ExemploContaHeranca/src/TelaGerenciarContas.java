@@ -83,6 +83,20 @@ public class TelaGerenciarContas extends JPanel {
 				atualizaCampos();
 			}
 		});
+		contaPoupanca.getBtnDepositar().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				atualizaBotoes();
+				atualizaCampos();
+			}
+		});
+		contaPoupanca.getBtnRender().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				atualizaBotoes();
+				atualizaCampos();
+			}
+		});
 
 		contaCorrente = new JPanelContaCorrente();
 		contaCorrente.setBounds(103, 37, 500, 306);
@@ -93,6 +107,13 @@ public class TelaGerenciarContas extends JPanel {
 			}
 		});
 		contaCorrente.getBtnSacar().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				atualizaBotoes();
+				atualizaCampos();
+			}
+		});
+		contaCorrente.getBtnDepositar().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				atualizaBotoes();
@@ -146,11 +167,8 @@ public class TelaGerenciarContas extends JPanel {
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				titular.getContas().remove(index);
-				if (index != 0) {
-					index--;
-				} else {
-					limpaCampos();
-				}
+				index = titular.getContas().size();
+				limpaCampos();
 				verificaTipoConta();
 				atualizaBotoes();
 				atualizaCampos();
@@ -207,7 +225,7 @@ public class TelaGerenciarContas extends JPanel {
 			if (contaAtiva instanceof ContaCorrente) {
 				contaCorrente.setConta(contaAtiva);
 
-				contaCorrente.atualizaCampos(!(index < titular.getContas().size()));
+				contaCorrente.atualizaCampos(index < titular.getContas().size());
 				rdbtnContaCorrente.setSelected(true);
 				rdbtnContaPoupanca.setSelected(false);
 				contaCorrente.getLblTitulo().setText("CONTA N°" + (index + 1));
@@ -215,7 +233,7 @@ public class TelaGerenciarContas extends JPanel {
 			} else {
 				contaPoupanca.setConta(contaAtiva);
 
-				contaPoupanca.atualizaCampos(!(index < titular.getContas().size()));
+				contaPoupanca.atualizaCampos(index < titular.getContas().size());
 				rdbtnContaCorrente.setSelected(false);
 				rdbtnContaPoupanca.setSelected(true);
 				contaPoupanca.getLblTitulo().setText("CONTA N°" + (index + 1));
@@ -223,6 +241,8 @@ public class TelaGerenciarContas extends JPanel {
 			}
 
 		} else {
+			contaPoupanca.atualizaCampos(index < titular.getContas().size());
+			contaCorrente.atualizaCampos(index < titular.getContas().size());
 			limpaCampos();
 		}
 	}
@@ -253,7 +273,7 @@ public class TelaGerenciarContas extends JPanel {
 		}
 
 		if (c instanceof ContaPoupanca) {
-			double taxaJuros = contaPoupanca.getTaxaJuros();
+			double taxaJuros = contaPoupanca.getTaxaJuros() / 100;
 			((ContaPoupanca) c).setTaxaJuros(taxaJuros);
 
 			this.titular.criaContaPoupanca((ContaPoupanca) c);
