@@ -99,6 +99,7 @@ public class TelaGerenciarContas extends JPanel {
 		});
 
 		contaCorrente = new JPanelContaCorrente();
+		contaCorrente.getLblSaldo().setBounds(320, 56, 170, 40);
 		contaCorrente.setBounds(103, 37, 500, 306);
 		contaCorrente.getTxtLimite().addKeyListener(new KeyAdapter() {
 			@Override
