@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 public class TelaBanco {
 
 	private JFrame frame;
-	private static JPanel panelCadastroCliente;
+	private JPanel panelCadastroCliente;
 	private JTextField txtNome;
 	private JTextField txtCpf;
 	private JTextField txtData;
@@ -36,8 +36,8 @@ public class TelaBanco {
 	private int index;
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	private Cliente clienteLogado;
-	private static JPanel panel;
-	private static TelaGerenciarContas panelCadastroContas;
+	private JPanel panel;
+	private TelaGerenciarContas panelCadastroContas;
 	private JButton btnGerenciarContas;
 
 	/**
@@ -71,7 +71,7 @@ public class TelaBanco {
 		frame.setBounds(100, 100, 722, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		bg = new ButtonGroup();
 
 		panel = new JPanel();
@@ -83,7 +83,6 @@ public class TelaBanco {
 		panelCadastroCliente.setBounds(0, 0, 706, 519);
 		panelCadastroCliente.setLayout(null);
 		panel.add(panelCadastroCliente);
-		
 
 		JLabel labelCliente = new JLabel("CLIENTE");
 		labelCliente.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -180,7 +179,7 @@ public class TelaBanco {
 		rdbtnFeminino.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnFeminino.setBounds(212, 189, 48, 23);
 		panelCadastroCliente.add(rdbtnFeminino);
-		
+
 		bg.add(rdbtnMasculino);
 		bg.add(rdbtnFeminino);
 
@@ -231,7 +230,7 @@ public class TelaBanco {
 		btnGerenciarContas = new JButton("Gerenciar contas");
 		btnGerenciarContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panelCadastroContas.setCliente(clienteLogado);
+				panelCadastroContas.setTitular(clienteLogado);
 				alternarCadastro();
 			}
 		});
@@ -242,11 +241,14 @@ public class TelaBanco {
 		btnGerenciarContas.setBounds(445, 193, 196, 50);
 		panelCadastroCliente.add(btnGerenciarContas);
 
-		bg = new ButtonGroup();
-
 		panelCadastroContas = new TelaGerenciarContas();
 		panelCadastroContas.setBounds(0, 0, 701, 491);
 		panelCadastroContas.setLayout(null);
+		panelCadastroContas.getBtnRetornar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				alternarCadastro();
+			}
+		});
 	}
 
 	private void atualizaBotoes() {
@@ -305,8 +307,8 @@ public class TelaBanco {
 		txtData.setText("");
 	}
 
-	public static void alternarCadastro() {
-		if(panelCadastroCliente.isVisible()) {
+	public void alternarCadastro() {
+		if (panelCadastroCliente.isVisible()) {
 			panelCadastroContas.setVisible(true);
 			panelCadastroCliente.setVisible(false);
 			panel.add(panelCadastroContas);
@@ -321,14 +323,13 @@ public class TelaBanco {
 
 	private void addCliente(Cliente c) {
 		c.setNome(txtNome.getText());
-
 		String cpf = txtCpf.getText();
+		
 		if (!cpf.equals("") && Cliente.isCpfValido(cpf)) {
 			c.setCpf(cpf);
 		}
-
+		
 		char sexo = bg.getSelection().getActionCommand().charAt(0);
-		System.out.println(sexo);
 		c.setSexo(sexo);
 
 		String dataDeNascimento = txtData.getText();

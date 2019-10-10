@@ -93,6 +93,10 @@ public class JPanelConta extends JPanel {
 		return this.lblTitulo;
 	}
 	
+	public JLabel getLblSaldo() {
+		return this.lblSaldo;
+	}
+	
 	public JTextField getTxtMovimentacao() {
 		return this.txtMovimentacao;
 	}
