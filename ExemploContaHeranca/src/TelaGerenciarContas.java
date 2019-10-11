@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class TelaGerenciarContas extends JPanel {
+	private JRadioButton rdbtnContaCorrente;
+	private JRadioButton rdbtnContaPoupanca;
 	ButtonGroup bg;
 	private JPanelContaCorrente contaCorrente;
 	private JPanelContaPoupanca contaPoupanca;
@@ -22,13 +24,11 @@ public class TelaGerenciarContas extends JPanel {
 	private JButton btnProximo;
 	private JButton btnAdicionar;
 	private JButton btnRemover;
+	private JButton btnRetornar;
 
 	private int index;
 	private Cliente titular;
 	private Conta contaAtiva;
-	private JRadioButton rdbtnContaCorrente;
-	private JRadioButton rdbtnContaPoupanca;
-	private JButton btnRetornar;
 
 	public TelaGerenciarContas() {
 		super();

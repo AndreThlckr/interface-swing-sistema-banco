@@ -71,6 +71,7 @@ public class JPanelConta extends JPanel {
 		btnSacar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				realizarSaque();
+				setDadosConta(getConta());
 			}
 		});
 		btnSacar.setEnabled(false);
@@ -81,6 +82,7 @@ public class JPanelConta extends JPanel {
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				realizarDeposito();
+				setDadosConta(getConta());
 			}
 		});
 		btnDepositar.setEnabled(false);

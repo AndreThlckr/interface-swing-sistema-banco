@@ -1,20 +1,9 @@
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 public class TelaBanco {
 
@@ -22,7 +11,7 @@ public class TelaBanco {
 	private JPanel panel;
 	private TelaGerenciarClientes panelCadastroClientes;
 	private TelaGerenciarContas panelCadastroContas;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -67,18 +56,12 @@ public class TelaBanco {
 
 		panelCadastroClientes.getBtnGerenciarContas().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panelCadastroContas.setTitular(clienteLogado);
+				panelCadastroContas.setTitular(panelCadastroClientes.getClienteLogado());
 				alternarCadastro();
 				panelCadastroContas.atualizaCampos();
 				panelCadastroContas.atualizaBotoes();
 			}
 		});
-		btnGerenciarContas.setEnabled(false);
-		btnGerenciarContas.setForeground(Color.BLACK);
-		btnGerenciarContas.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnGerenciarContas.setBackground(Color.LIGHT_GRAY);
-		btnGerenciarContas.setBounds(445, 193, 196, 50);
-		panelCadastroCliente.add(btnGerenciarContas);
 
 		panelCadastroContas = new TelaGerenciarContas();
 		panelCadastroContas.setBounds(0, 0, 701, 491);
@@ -86,7 +69,7 @@ public class TelaBanco {
 		panelCadastroContas.getBtnRetornar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				alternarCadastro();
-				index = clientes.indexOf(panelCadastroContas.getTitular());
+				panelCadastroClientes.setIndex(panelCadastroContas.getTitular());
 				panelCadastroClientes.atualizaCampos();
 				panelCadastroClientes.atualizaBotoes();
 			}
@@ -94,16 +77,16 @@ public class TelaBanco {
 	}
 
 	public void alternarCadastro() {
-		if (panelCadastroCliente.isVisible()) {
+		if (panelCadastroClientes.isVisible()) {
 			panelCadastroContas.setVisible(true);
-			panelCadastroCliente.setVisible(false);
+			panelCadastroClientes.setVisible(false);
 			panel.add(panelCadastroContas);
-			panel.remove(panelCadastroCliente);
+			panel.remove(panelCadastroClientes);
 		} else {
 			panelCadastroContas.setVisible(false);
-			panelCadastroCliente.setVisible(true);
+			panelCadastroClientes.setVisible(true);
 			panel.remove(panelCadastroContas);
-			panel.add(panelCadastroCliente);
+			panel.add(panelCadastroClientes);
 		}
 	}
 }
